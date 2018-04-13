@@ -8,6 +8,6 @@ CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \
     sleep ${JHIPSTER_SLEEP} && \
     java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /app.war
 
-EXPOSE 8095 5701/udp
+EXPOSE 8124 5701/udp
 
 ADD *.war /app.war
