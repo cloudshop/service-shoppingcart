@@ -1,7 +1,10 @@
 package com.eyun.shoppingcart.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.eyun.shoppingcart.security.SecurityUtils;
 import com.eyun.shoppingcart.service.ShopCartService;
+import com.eyun.shoppingcart.service.UaaService;
+import com.eyun.shoppingcart.service.dto.UserDTO;
 import com.eyun.shoppingcart.web.rest.errors.BadRequestAlertException;
 import com.eyun.shoppingcart.web.rest.util.HeaderUtil;
 import com.eyun.shoppingcart.web.rest.util.PaginationUtil;
@@ -9,8 +12,11 @@ import com.eyun.shoppingcart.service.dto.ShopCartDTO;
 import com.eyun.shoppingcart.service.dto.ShopCartCriteria;
 import com.eyun.shoppingcart.service.ShopCartQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -22,11 +28,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * REST controller for managing ShopCart.
  */
+
+@Api("购物车微服务")
 @RestController
 @RequestMapping("/api")
 public class ShopCartResource {
@@ -39,6 +48,8 @@ public class ShopCartResource {
 
     private final ShopCartQueryService shopCartQueryService;
 
+    @Autowired
+    UaaService uaaService;
     public ShopCartResource(ShopCartService shopCartService, ShopCartQueryService shopCartQueryService) {
         this.shopCartService = shopCartService;
         this.shopCartQueryService = shopCartQueryService;
@@ -128,5 +139,35 @@ public class ShopCartResource {
         log.debug("REST request to delete ShopCart : {}", id);
         shopCartService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @ApiOperation("购物车列表")
+    @GetMapping("/shoppingcar/user")
+    @Timed
+    public ResponseEntity<Map> userShoppingCar() {
+        Optional<String> o = SecurityUtils.getCurrentUserLogin();
+        System.out.println(o.get());
+        UserDTO userDTO=uaaService.getAccount();
+        Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    //{"userId":1,"productId":2,"shopid":1,"productName":"ipone x","unitPrice":7559,"count":2}
+    @ApiOperation("加入购物车")
+    @PostMapping("/shoppingcar/add")
+    @Timed
+    public ResponseEntity<ShopCartDTO> addShoppingCar(@RequestBody ShopCartDTO shoppingCarDTO) {
+        UserDTO userDTO=uaaService.getAccount();
+        shoppingCarDTO.setUserid(userDTO.getId());
+        shoppingCarDTO= shopCartService.addShoppingCar(shoppingCarDTO);
+        return new ResponseEntity<>(shoppingCarDTO, HttpStatus.OK);
+    }
+
+    @ApiOperation("删除购物车")
+    @PostMapping ("/shoppingcar/del")
+    @Timed
+    public ResponseEntity<String> delShoppingCar(@RequestBody List<Long> skuids) {
+        UserDTO userDTO=uaaService.getAccount();
+        String result= shopCartService.updateShoppingCar(userDTO.getId(),skuids);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
