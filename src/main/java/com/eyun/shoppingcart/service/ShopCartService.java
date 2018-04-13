@@ -4,6 +4,9 @@ import com.eyun.shoppingcart.service.dto.ShopCartDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Service Interface for managing ShopCart.
  */
@@ -39,4 +42,11 @@ public interface ShopCartService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    /*用户购物车列表*/
+    public Map getShoppingCarByUserId(Long userId);
+    /*添加商品到购物车*/
+    public ShopCartDTO addShoppingCar(ShopCartDTO shoppingCarDTO);
+
+    /*清空购物车*/
+    public String updateShoppingCar(Long userId, List<Long> skuids);
 }
