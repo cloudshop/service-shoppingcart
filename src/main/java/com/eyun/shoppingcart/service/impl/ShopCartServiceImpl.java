@@ -150,8 +150,6 @@ public class ShopCartServiceImpl implements ShopCartService {
 
     @Override
     public String updateShoppingCar(Long userId,List<Long> skuids) {
-        log.info("Skuid::"+skuids.get(0));
-        log.info("Skuid::"+skuids.get(1));
         List<Map>list=shopCartRepository.findShoppingCarByUserId(userId);
         if (!list.isEmpty()&&list.size()>0){
             shopCartRepository.updateShoppingCar(userId,skuids);

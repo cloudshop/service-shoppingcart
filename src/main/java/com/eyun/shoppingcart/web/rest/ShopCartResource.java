@@ -145,8 +145,8 @@ public class ShopCartResource {
     @GetMapping("/shoppingcar/user")
     @Timed
     public ResponseEntity<Map> userShoppingCar() {
-        Optional<String> o = SecurityUtils.getCurrentUserLogin();
-        System.out.println(o.get());
+        /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
+        System.out.println(o.get());*/
         UserDTO userDTO=uaaService.getAccount();
         Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
