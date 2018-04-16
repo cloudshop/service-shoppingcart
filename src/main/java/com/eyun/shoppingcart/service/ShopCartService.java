@@ -45,7 +45,7 @@ public interface ShopCartService {
     /*用户购物车列表*/
     public Map getShoppingCarByUserId(Long userId);
     /*添加商品到购物车*/
-    public ShopCartDTO addShoppingCar(ShopCartDTO shoppingCarDTO);
+    public Map addShoppingCar(ShopCartDTO shoppingCarDTO);
 
     /*清空购物车*/
     public String updateShoppingCar(Long userId, List<Long> skuids);

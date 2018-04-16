@@ -123,13 +123,14 @@ public class ShopCartServiceImpl implements ShopCartService {
                 shopMap.put("shopName","");//todo
                 shopMap.put("checkox","false");
                 Map skuMap=new HashMap();
+                skuMap.put("index",skuList.size());
                 skuMap.put("count",map.get("count"));
                 skuMap.put("skuid",map.get("skuid"));
-                Map sku=feignProductClient.getSku(Long.valueOf(map.get("skuid").toString()));
-                skuMap.put("skuName",sku==null?"":sku.get("skuName"));
-                skuMap.put("unitPrice",sku==null?"":sku.get("price"));
-                List<Map> imgList=feignProductClient.getSkuImg(Long.valueOf(map.get("skuid").toString()));
-                skuMap.put("url",imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl"));
+                //Map sku=feignProductClient.getSku(Long.valueOf(map.get("skuid").toString()));
+                skuMap.put("skuName",/*sku==null?"":sku.get("skuName")*/"iphone8 白色 128G");
+                skuMap.put("unitPrice","9889"/*sku==null?"":sku.get("price")*/);
+                //List<Map> imgList=feignProductClient.getSkuImg(Long.valueOf(map.get("skuid").toString()));
+                skuMap.put("url",/*imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl")*/"http://img20.360buyimg.com/focus/jfs/t13759/194/897734755/2493/1305d4c4/5a1692ebN8ae73077.jpg");
                 skuMap.put("checkboxChild","false");
                 skuList.add(skuMap);
                 shopMap.put("sku",skuList);
@@ -145,9 +146,16 @@ public class ShopCartServiceImpl implements ShopCartService {
     }
 
     @Override
-    public ShopCartDTO addShoppingCar(ShopCartDTO shoppingCarDTO) {
+    public Map addShoppingCar(ShopCartDTO shoppingCarDTO) {
+        String message="success";
+        String content="添加购物车成功";
         ShopCart shoppingCar=shopCartRepository.findShopCartBySkuIdAndUserid(shoppingCarDTO.getSkuId(),shoppingCarDTO.getUserid());
         if (shoppingCar!=null){
+            Map sku=feignProductClient.getSku(shoppingCarDTO.getSkuId());
+            if (sku.get("count").toString().equals("0")){
+                message="failed";
+                content="添加购物车失败！暂无库存";
+            }
             shoppingCar.setCount(shoppingCar.getCount()+shoppingCarDTO.getCount());
             shoppingCar.setUpdatedTime(Instant.now());
             shopCartRepository.save(shoppingCar);
@@ -158,8 +166,10 @@ public class ShopCartServiceImpl implements ShopCartService {
             shoppingCar.setCreatedTime(Instant.now());
             shopCartRepository.save(shoppingCar);
         }
-        BeanUtils.copyProperties(shoppingCar,shoppingCarDTO);
-        return shoppingCarDTO;
+        Map result=new HashMap();
+        result.put("message",message);
+        result.put("content",content);
+        return result;
     }
 
     @Override

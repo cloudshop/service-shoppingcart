@@ -147,25 +147,25 @@ public class ShopCartResource {
     public ResponseEntity<Map> userShoppingCar() throws Exception {
         /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
         System.out.println(o.get());*/
-        UserDTO userDTO=uaaService.getAccount();
+        /*UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
-        }
-        Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
+        }*/
+        Map result= shopCartService.getShoppingCarByUserId(3l);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     //{"skuId":2,"shopid":1,"count":2}
     @ApiOperation("加入购物车")
     @PostMapping("/shoppingcar/add")
     @Timed
-    public ResponseEntity<ShopCartDTO> addShoppingCar(@RequestBody ShopCartDTO shoppingCarDTO) throws Exception {
+    public ResponseEntity<Map> addShoppingCar(@RequestBody ShopCartDTO shoppingCarDTO) throws Exception {
         UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
         }
         shoppingCarDTO.setUserid(userDTO.getId());
-        shoppingCarDTO= shopCartService.addShoppingCar(shoppingCarDTO);
-        return new ResponseEntity<>(shoppingCarDTO, HttpStatus.OK);
+        Map result= shopCartService.addShoppingCar(shoppingCarDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ApiOperation("删除购物车")
