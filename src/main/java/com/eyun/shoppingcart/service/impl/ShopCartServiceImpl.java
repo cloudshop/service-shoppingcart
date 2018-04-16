@@ -126,11 +126,11 @@ public class ShopCartServiceImpl implements ShopCartService {
                 skuMap.put("index",skuList.size());
                 skuMap.put("count",map.get("count"));
                 skuMap.put("skuid",map.get("skuid"));
-                //Map sku=feignProductClient.getSku(Long.valueOf(map.get("skuid").toString()));
-                skuMap.put("skuName",/*sku==null?"":sku.get("skuName")*/"iphone8 白色 128G");
-                skuMap.put("unitPrice","9889"/*sku==null?"":sku.get("price")*/);
-                //List<Map> imgList=feignProductClient.getSkuImg(Long.valueOf(map.get("skuid").toString()));
-                skuMap.put("url",/*imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl")*/"http://img20.360buyimg.com/focus/jfs/t13759/194/897734755/2493/1305d4c4/5a1692ebN8ae73077.jpg");
+                Map sku=feignProductClient.getSku(Long.valueOf(map.get("skuid").toString()));
+                skuMap.put("skuName",sku==null?"":sku.get("skuName"));
+                skuMap.put("unitPrice",sku==null?"":sku.get("price"));
+                List<Map> imgList=feignProductClient.getSkuImg(Long.valueOf(map.get("skuid").toString()));
+                skuMap.put("url",imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl"));
                 skuMap.put("checkboxChild","false");
                 skuList.add(skuMap);
                 shopMap.put("sku",skuList);
