@@ -18,10 +18,6 @@ public class ShopCartDTO implements Serializable {
 
     private Long skuId;
 
-    private String skuName;
-
-    private Double unitPrice;
-
     private Integer count;
 
     private Instant createdTime;
@@ -94,21 +90,6 @@ public class ShopCartDTO implements Serializable {
         this.deleted = deleted;
     }
 
-    public String getSkuName() {
-        return skuName;
-    }
-
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
 
     public Boolean getDeleted() {
         return deleted;
@@ -142,8 +123,6 @@ public class ShopCartDTO implements Serializable {
             ", userid=" + userid +
             ", shopId=" + shopId +
             ", skuId=" + skuId +
-            ", skuName='" + skuName + '\'' +
-            ", unitPrice=" + unitPrice +
             ", count=" + count +
             ", createdTime=" + createdTime +
             ", updatedTime=" + updatedTime +

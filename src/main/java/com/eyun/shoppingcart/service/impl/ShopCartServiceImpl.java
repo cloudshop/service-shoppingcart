@@ -1,5 +1,7 @@
 package com.eyun.shoppingcart.service.impl;
 
+import com.eyun.shoppingcart.service.FeignProductClient;
+import com.eyun.shoppingcart.service.FeignShopClient;
 import com.eyun.shoppingcart.service.ShopCartService;
 import com.eyun.shoppingcart.domain.ShopCart;
 import com.eyun.shoppingcart.repository.ShopCartRepository;
@@ -8,6 +10,7 @@ import com.eyun.shoppingcart.service.mapper.ShopCartMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,12 @@ public class ShopCartServiceImpl implements ShopCartService {
     private final ShopCartRepository shopCartRepository;
 
     private final ShopCartMapper shopCartMapper;
+
+    /*@Autowired
+    FeignShopClient feignShopClient;*/
+
+    @Autowired
+    FeignProductClient feignProductClient;
 
     public ShopCartServiceImpl(ShopCartRepository shopCartRepository, ShopCartMapper shopCartMapper) {
         this.shopCartRepository = shopCartRepository;
@@ -110,13 +119,17 @@ public class ShopCartServiceImpl implements ShopCartService {
                     skuList=new ArrayList<>();
                 }
                 shopMap.put("shopId",shopId);
-                shopMap.put("shopName","");
+                //String shopName=feignShopClient.getShopById(Long.valueOf(shopId)).get("shopName").toString();
+                shopMap.put("shopName","");//todo
                 shopMap.put("checkox","false");
                 Map skuMap=new HashMap();
                 skuMap.put("count",map.get("count"));
                 skuMap.put("skuid",map.get("skuid"));
-                skuMap.put("skuName",map.get("skuname"));
-                skuMap.put("unitPrice",map.get("unitprice"));
+                Map sku=feignProductClient.getSku(Long.valueOf(map.get("skuid").toString()));
+                skuMap.put("skuName",sku==null?"":sku.get("skuName"));
+                skuMap.put("unitPrice",sku==null?"":sku.get("price"));
+                List<Map> imgList=feignProductClient.getSkuImg(Long.valueOf(map.get("skuid").toString()));
+                skuMap.put("url",imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl"));
                 skuMap.put("checkboxChild","false");
                 skuList.add(skuMap);
                 shopMap.put("sku",skuList);

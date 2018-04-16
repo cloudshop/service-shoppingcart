@@ -32,12 +32,6 @@ public class ShopCart implements Serializable {
     @Column(name = "sku_id")
     private Long skuId;
 
-    @Column(name = "sku_name")
-    private String skuName;
-
-    @Column(name = "unit_price")
-    private Double unitPrice;
-
     @Column(name = "count")
     private Integer count;
 
@@ -166,25 +160,10 @@ public class ShopCart implements Serializable {
         return Objects.equals(getId(), shopCart.getId());
     }
 
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
     public Boolean getDeleted() {
         return deleted;
     }
 
-    public String getSkuName() {
-        return skuName;
-    }
-
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
-    }
 
     @Override
     public int hashCode() {
@@ -198,8 +177,6 @@ public class ShopCart implements Serializable {
             ", userId=" + userid +
             ", skuId=" + skuId +
             ", shopid=" + shopId +
-            ", skuName='" + skuName + '\'' +
-            ", unitPrice=" + unitPrice +
             ", count=" + count +
             ", createdTime=" + createdTime +
             ", updatedTime=" + updatedTime +
