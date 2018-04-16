@@ -11,9 +11,9 @@ import java.util.Map;
 @AuthorizedFeignClient(name="product")
 public interface FeignProductClient {
     @GetMapping("/api/sku-imgs/")
-    public List<Map> getSkuImg(@RequestParam("skuId") Long skuId);
+    public List<Map> getSkuImg(@RequestParam("id") Long skuId);
 
-    @GetMapping("/api/product-skus/{skuId}")
-    public Map getSku(@PathVariable("skuId") Long skuId);
+    @GetMapping("/api/product-skus/{id}")
+    public Map getSku(@PathVariable("id") Long skuId);
 
 }
