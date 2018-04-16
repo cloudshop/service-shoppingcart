@@ -144,11 +144,11 @@ public class ShopCartResource {
     @ApiOperation("购物车列表")
     @GetMapping("/shoppingcar/user")
     @Timed
-    public ResponseEntity<Map> userShoppingCar(@RequestParam("userId") Long userId) {
+    public ResponseEntity<Map> userShoppingCar() {
         /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
         System.out.println(o.get());*/
-        //UserDTO userDTO=uaaService.getAccount();
-        Map result= shopCartService.getShoppingCarByUserId(/*userDTO.getId()*/userId);
+        UserDTO userDTO=uaaService.getAccount();
+        Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     //{"userId":1,"productId":2,"shopid":1,"productName":"ipone x","unitPrice":7559,"count":2}
