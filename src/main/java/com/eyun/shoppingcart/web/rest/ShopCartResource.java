@@ -144,19 +144,25 @@ public class ShopCartResource {
     @ApiOperation("购物车列表")
     @GetMapping("/shoppingcar/user")
     @Timed
-    public ResponseEntity<Map> userShoppingCar() {
+    public ResponseEntity<Map> userShoppingCar() throws Exception {
         /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
         System.out.println(o.get());*/
         UserDTO userDTO=uaaService.getAccount();
+        if (userDTO==null){
+            throw new Exception("获取当前登陆用户失败");
+        }
         Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    //{"userId":1,"productId":2,"shopid":1,"productName":"ipone x","unitPrice":7559,"count":2}
+    //{"skuId":2,"shopid":1,"count":2}
     @ApiOperation("加入购物车")
     @PostMapping("/shoppingcar/add")
     @Timed
-    public ResponseEntity<ShopCartDTO> addShoppingCar(@RequestBody ShopCartDTO shoppingCarDTO) {
+    public ResponseEntity<ShopCartDTO> addShoppingCar(@RequestBody ShopCartDTO shoppingCarDTO) throws Exception {
         UserDTO userDTO=uaaService.getAccount();
+        if (userDTO==null){
+            throw new Exception("获取当前登陆用户失败");
+        }
         shoppingCarDTO.setUserid(userDTO.getId());
         shoppingCarDTO= shopCartService.addShoppingCar(shoppingCarDTO);
         return new ResponseEntity<>(shoppingCarDTO, HttpStatus.OK);
@@ -165,8 +171,11 @@ public class ShopCartResource {
     @ApiOperation("删除购物车")
     @PostMapping ("/shoppingcar/del")
     @Timed
-    public ResponseEntity<String> delShoppingCar(@RequestBody List<Long> skuids) {
+    public ResponseEntity<String> delShoppingCar(@RequestBody List<Long> skuids)throws Exception {
         UserDTO userDTO=uaaService.getAccount();
+        if (userDTO==null){
+            throw new Exception("获取当前登陆用户失败");
+        }
         String result= shopCartService.updateShoppingCar(userDTO.getId(),skuids);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -150,13 +150,14 @@ public class ShopCartServiceImpl implements ShopCartService {
         if (shoppingCar!=null){
             shoppingCar.setCount(shoppingCar.getCount()+shoppingCarDTO.getCount());
             shoppingCar.setUpdatedTime(Instant.now());
+            shopCartRepository.save(shoppingCar);
         }else {
             shoppingCar=new ShopCart();
             BeanUtils.copyProperties(shoppingCarDTO,shoppingCar);
             shoppingCar.setDeleted(false);
             shoppingCar.setCreatedTime(Instant.now());
+            shopCartRepository.save(shoppingCar);
         }
-        shopCartRepository.save(shoppingCar);
         BeanUtils.copyProperties(shoppingCar,shoppingCarDTO);
         return shoppingCarDTO;
     }
