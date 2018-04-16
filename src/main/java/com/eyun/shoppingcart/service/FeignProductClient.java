@@ -14,6 +14,6 @@ public interface FeignProductClient {
     public List<Map> getSkuImg(@RequestParam("id") Long skuId);
 
     @GetMapping("/api/product-skus/{id}")
-    public Map getSku(@PathVariable("id") Long skuId);
+    public Map getSku(@PathVariable("id") Long id);
 
 }
