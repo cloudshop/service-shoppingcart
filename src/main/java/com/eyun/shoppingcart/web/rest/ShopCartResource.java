@@ -147,11 +147,11 @@ public class ShopCartResource {
     public ResponseEntity<Map> userShoppingCar() throws Exception {
         /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
         System.out.println(o.get());*/
-        /*UserDTO userDTO=uaaService.getAccount();
+        UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
-        }*/
-        Map result= shopCartService.getShoppingCarByUserId(3l);
+        }
+        Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     //{"skuId":2,"shopid":1,"count":2}
