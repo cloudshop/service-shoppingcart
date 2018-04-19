@@ -145,6 +145,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                     log.error(e.getMessage(), e);
                 }
                 skuMap.put("skuName",sku==null?"":sku.get("skuName"));
+                skuMap.put("skuCount",sku==null?"":sku.get("count"));
                 skuMap.put("unitPrice",sku==null?"":sku.get("price"));
                 List<Map> imgList=null;
                 try {
