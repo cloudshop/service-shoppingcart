@@ -7,14 +7,18 @@ import com.eyun.shoppingcart.domain.ShopCart;
 import com.eyun.shoppingcart.repository.ShopCartRepository;
 import com.eyun.shoppingcart.service.dto.ShopCartDTO;
 import com.eyun.shoppingcart.service.mapper.ShopCartMapper;
+import io.github.jhipster.service.filter.Filter;
+import io.github.jhipster.service.filter.LongFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -36,8 +40,8 @@ public class ShopCartServiceImpl implements ShopCartService {
 
     private final ShopCartMapper shopCartMapper;
 
-    /*@Autowired
-    FeignShopClient feignShopClient;*/
+    @Autowired
+    FeignShopClient feignShopClient;
 
     @Autowired
     FeignProductClient feignProductClient;
@@ -119,17 +123,37 @@ public class ShopCartServiceImpl implements ShopCartService {
                     skuList=new ArrayList<>();
                 }
                 shopMap.put("shopId",shopId);
-                //String shopName=feignShopClient.getShopById(Long.valueOf(shopId)).get("shopName").toString();
-                shopMap.put("shopName","");//todo
+                Map<String,String> shop=null;
+                try{
+                    ResponseEntity<Map<String,String>> responseEntity=feignShopClient.getShopById(Long.valueOf(shopId));
+                    shop=responseEntity.getBody();
+                }catch (Exception e){
+                    log.error(e.getMessage(), e);
+                }
+
+                shopMap.put("shopName",shop==null?"":shop.get("name"));
                 shopMap.put("checkox","false");
                 Map skuMap=new HashMap();
                 skuMap.put("index",skuList.size());
                 skuMap.put("count",map.get("count"));
                 skuMap.put("skuid",map.get("skuid"));
-                Map sku=feignProductClient.getSku(Long.valueOf(map.get("skuid").toString()));
+                Long skuid=Long.valueOf(map.get("skuid").toString());
+                Map sku=null;
+                try {
+                    sku=feignProductClient.getSku(skuid);
+                }catch (Exception e){
+                    log.error(e.getMessage(), e);
+                }
                 skuMap.put("skuName",sku==null?"":sku.get("skuName"));
                 skuMap.put("unitPrice",sku==null?"":sku.get("price"));
-                List<Map> imgList=feignProductClient.getSkuImg(Long.valueOf(map.get("skuid").toString()));
+                List<Map> imgList=null;
+                try {
+                    ResponseEntity<List> forEntity=new RestTemplate().getForEntity("http://cloud.eyun.online:9080/product/api/sku-imgs?skuId.equals="+skuid,List.class);
+                    imgList=forEntity.getBody();
+                }catch (Exception e){
+                    log.error(e.getMessage(), e);
+                }
+
                 skuMap.put("url",imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl"));
                 skuMap.put("checkboxChild","false");
                 skuList.add(skuMap);
