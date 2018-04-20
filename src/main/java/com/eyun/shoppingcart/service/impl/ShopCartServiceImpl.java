@@ -134,6 +134,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                 shopMap.put("shopName",shop==null?"":shop.get("name"));
                 shopMap.put("checkox",false);
                 Map skuMap=new HashMap();
+                skuMap.put("carid",map.get("id"));
                 skuMap.put("index",skuList.size());
                 skuMap.put("count",map.get("count"));
                 skuMap.put("skuid",map.get("skuid"));
