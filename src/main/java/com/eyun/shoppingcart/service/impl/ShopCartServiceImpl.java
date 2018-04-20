@@ -113,7 +113,7 @@ public class ShopCartServiceImpl implements ShopCartService {
             Integer index=0;
             String shopId="";
             Map shopMap=new HashMap();
-            result.put("checkboxBig","false");
+            result.put("checkboxBig",false);
             List shopIdList=new ArrayList();
             for (Map map:list){
                 if (!shopId.equals(map.get("shopid").toString())){
@@ -132,7 +132,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                 }
 
                 shopMap.put("shopName",shop==null?"":shop.get("name"));
-                shopMap.put("checkox","false");
+                shopMap.put("checkox",false);
                 Map skuMap=new HashMap();
                 skuMap.put("index",skuList.size());
                 skuMap.put("count",map.get("count"));
@@ -156,7 +156,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                 }
 
                 skuMap.put("url",imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl"));
-                skuMap.put("checkboxChild","false");
+                skuMap.put("checkboxChild",false);
                 skuList.add(skuMap);
                 shopMap.put("sku",skuList);
                 if (!shopIdList.contains(shopId)){
