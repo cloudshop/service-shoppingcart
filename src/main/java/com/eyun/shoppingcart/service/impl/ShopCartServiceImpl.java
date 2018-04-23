@@ -7,8 +7,6 @@ import com.eyun.shoppingcart.domain.ShopCart;
 import com.eyun.shoppingcart.repository.ShopCartRepository;
 import com.eyun.shoppingcart.service.dto.ShopCartDTO;
 import com.eyun.shoppingcart.service.mapper.ShopCartMapper;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.LongFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -156,7 +154,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                     log.error(e.getMessage(), e);
                 }
 
-                skuMap.put("url",imgList.isEmpty()&&imgList.size()==0?"":imgList.get(0).get("imgUrl"));
+                skuMap.put("url",imgList==null?"":imgList.get(0).get("imgUrl"));
                 skuMap.put("checkboxChild",false);
                 skuList.add(skuMap);
                 shopMap.put("sku",skuList);
