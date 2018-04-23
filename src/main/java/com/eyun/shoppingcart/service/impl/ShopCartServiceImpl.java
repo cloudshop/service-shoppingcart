@@ -148,8 +148,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                 skuMap.put("unitPrice",sku==null?"":sku.get("price"));
                 List<Map> imgList=null;
                 try {
-                    ResponseEntity<List> forEntity=new RestTemplate().getForEntity("http://cloud.eyun.online:9080/product/api/sku-imgs?skuId.equals="+skuid,List.class);
-                    imgList=forEntity.getBody();
+                    imgList=feignProductClient.getSkuImgs(skuid);
                 }catch (Exception e){
                     log.error(e.getMessage(), e);
                 }

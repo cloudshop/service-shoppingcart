@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -147,23 +148,23 @@ public class ShopCartResource {
     public ResponseEntity<Map> userShoppingCar() throws Exception {
         /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
         System.out.println(o.get());*/
-        UserDTO userDTO=uaaService.getAccount();
+        /*UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
-        }
-        Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
+        }*/
+        Map result= shopCartService.getShoppingCarByUserId(/*userDTO.getId()*/3L);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     //{"skuId":2,"shopid":1,"count":2}
     @ApiOperation("加入购物车")
     @PostMapping("/shoppingcar/add")
     @Timed
-    public ResponseEntity<Map> addShoppingCar(@RequestBody ShopCartDTO shoppingCarDTO) throws Exception {
-        UserDTO userDTO=uaaService.getAccount();
+    public ResponseEntity<Map> addShoppingCar(@Valid @RequestBody ShopCartDTO shoppingCarDTO) throws Exception {
+        /*UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
-        }
-        shoppingCarDTO.setUserid(userDTO.getId());
+        }*/
+        shoppingCarDTO.setUserid(/*userDTO.getId()*/3L);
         Map result= shopCartService.addShoppingCar(shoppingCarDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
