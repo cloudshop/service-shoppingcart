@@ -13,6 +13,6 @@ public interface FeignProductClient {
     public Map getSku(@PathVariable("id") Long id);
 
     @GetMapping("/skuimgs/{skuId}")
-    public List<Map> getSkuImgs(@PathVariable Long skuId);
+    public List<Map> getSkuImgs(@PathVariable("skuId") Long skuId);
 
 }
