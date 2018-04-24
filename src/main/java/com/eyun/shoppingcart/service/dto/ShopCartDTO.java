@@ -1,6 +1,7 @@
 package com.eyun.shoppingcart.service.dto;
 
 
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,10 +15,11 @@ public class ShopCartDTO implements Serializable {
 
     private Long userid;
 
+    @NotNull
     private Long shopId;
-
+    @NotNull
     private Long skuId;
-
+    @NotNull
     private Integer count;
 
     private Instant createdTime;

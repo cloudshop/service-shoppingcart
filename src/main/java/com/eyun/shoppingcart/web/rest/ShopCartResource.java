@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -65,7 +66,7 @@ public class ShopCartResource {
      */
     @PostMapping("/shop-carts")
     @Timed
-    public ResponseEntity<ShopCartDTO> createShopCart(@RequestBody ShopCartDTO shopCartDTO) throws URISyntaxException {
+    public ResponseEntity<ShopCartDTO> createShopCart(@NotNull @RequestBody ShopCartDTO shopCartDTO) throws URISyntaxException {
         log.debug("REST request to save ShopCart : {}", shopCartDTO);
         if (shopCartDTO.getId() != null) {
             throw new BadRequestAlertException("A new shopCart cannot already have an ID", ENTITY_NAME, "idexists");
@@ -87,7 +88,7 @@ public class ShopCartResource {
      */
     @PutMapping("/shop-carts")
     @Timed
-    public ResponseEntity<ShopCartDTO> updateShopCart(@RequestBody ShopCartDTO shopCartDTO) throws URISyntaxException {
+    public ResponseEntity<ShopCartDTO> updateShopCart(@NotNull @RequestBody ShopCartDTO shopCartDTO) throws URISyntaxException {
         log.debug("REST request to update ShopCart : {}", shopCartDTO);
         if (shopCartDTO.getId() == null) {
             return createShopCart(shopCartDTO);
@@ -148,11 +149,11 @@ public class ShopCartResource {
     public ResponseEntity<Map> userShoppingCar() throws Exception {
         /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
         System.out.println(o.get());*/
-        /*UserDTO userDTO=uaaService.getAccount();
+        UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
-        }*/
-        Map result= shopCartService.getShoppingCarByUserId(/*userDTO.getId()*/3L);
+        }
+        Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     //{"skuId":2,"shopid":1,"count":2}
@@ -160,11 +161,11 @@ public class ShopCartResource {
     @PostMapping("/shoppingcar/add")
     @Timed
     public ResponseEntity<Map> addShoppingCar(@Valid @RequestBody ShopCartDTO shoppingCarDTO) throws Exception {
-        /*UserDTO userDTO=uaaService.getAccount();
+        UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
-        }*/
-        shoppingCarDTO.setUserid(/*userDTO.getId()*/3L);
+        }
+        shoppingCarDTO.setUserid(userDTO.getId());
         Map result= shopCartService.addShoppingCar(shoppingCarDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -172,7 +173,7 @@ public class ShopCartResource {
     @ApiOperation("删除购物车")
     @PostMapping ("/shoppingcar/del")
     @Timed
-    public ResponseEntity<String> delShoppingCar(@RequestBody List<Long> skuids)throws Exception {
+    public ResponseEntity<String> delShoppingCar(@NotNull @RequestBody List<Long> skuids)throws Exception {
         UserDTO userDTO=uaaService.getAccount();
         if (userDTO==null){
             throw new Exception("获取当前登陆用户失败");
