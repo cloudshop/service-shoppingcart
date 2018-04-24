@@ -152,8 +152,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                 }catch (Exception e){
                     log.error(e.getMessage(), e);
                 }
-
-                skuMap.put("url",imgList==null&&imgList.size()==0?"":imgList.get(0).get("imgUrl"));
+                skuMap.put("url",imgList.isEmpty()?"":imgList.get(0).get("imgUrl"));
                 skuMap.put("checkboxChild",false);
                 skuList.add(skuMap);
                 shopMap.put("sku",skuList);
