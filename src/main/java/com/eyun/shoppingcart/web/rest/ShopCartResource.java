@@ -149,9 +149,12 @@ public class ShopCartResource {
     public ResponseEntity<Map> userShoppingCar() throws Exception {
         /*Optional<String> o = SecurityUtils.getCurrentUserLogin();
         System.out.println(o.get());*/
-        UserDTO userDTO=uaaService.getAccount();
-        if (userDTO==null){
-            throw new Exception("获取当前登陆用户失败");
+        UserDTO userDTO=null;
+        try{
+            userDTO=uaaService.getAccount();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new BadRequestAlertException("获取当前登陆用户失败","userLogin","userLoginNotFound");
         }
         Map result= shopCartService.getShoppingCarByUserId(userDTO.getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -161,9 +164,12 @@ public class ShopCartResource {
     @PostMapping("/shoppingcar/add")
     @Timed
     public ResponseEntity<Map> addShoppingCar(@Valid @RequestBody ShopCartDTO shoppingCarDTO) throws Exception {
-        UserDTO userDTO=uaaService.getAccount();
-        if (userDTO==null){
-            throw new Exception("获取当前登陆用户失败");
+        UserDTO userDTO=null;
+        try{
+            userDTO=uaaService.getAccount();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new BadRequestAlertException("获取当前登陆用户失败","userLogin","userLoginNotFound");
         }
         shoppingCarDTO.setUserid(userDTO.getId());
         Map result= shopCartService.addShoppingCar(shoppingCarDTO);
@@ -177,9 +183,12 @@ public class ShopCartResource {
     @PostMapping ("/shoppingcar/del")
     @Timed
     public ResponseEntity<String> delShoppingCar(@NotNull @RequestBody List<Long> skuids)throws Exception {
-        UserDTO userDTO=uaaService.getAccount();
-        if (userDTO==null){
-            throw new Exception("获取当前登陆用户失败");
+        UserDTO userDTO=null;
+        try{
+            userDTO=uaaService.getAccount();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new BadRequestAlertException("获取当前登陆用户失败","userLogin","userLoginNotFound");
         }
         String result= shopCartService.updateShoppingCar(userDTO.getId(),skuids);
         return new ResponseEntity<>(result, HttpStatus.OK);
