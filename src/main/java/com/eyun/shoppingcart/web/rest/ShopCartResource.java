@@ -167,6 +167,9 @@ public class ShopCartResource {
         }
         shoppingCarDTO.setUserid(userDTO.getId());
         Map result= shopCartService.addShoppingCar(shoppingCarDTO);
+        if (result.get("message").toString().equals("failed")){
+            throw new BadRequestAlertException(result.get("content").toString(),"shoppingcarAdd","shoppingcarAddfailed");
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
