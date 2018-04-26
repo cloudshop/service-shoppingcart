@@ -179,6 +179,7 @@ public class ShopCartServiceImpl implements ShopCartService {
                 content="添加购物车失败！暂无库存";
             }
             shoppingCar.setCount(shoppingCar.getCount()+shoppingCarDTO.getCount());
+            shoppingCar.setUserid(shoppingCarDTO.getUserid());
             shoppingCar.setDeleted(false);
             shoppingCar.setUpdatedTime(Instant.now());
             shopCartRepository.save(shoppingCar);
