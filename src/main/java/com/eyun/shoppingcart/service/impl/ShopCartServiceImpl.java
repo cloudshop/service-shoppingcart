@@ -174,12 +174,12 @@ public class ShopCartServiceImpl implements ShopCartService {
         ShopCart shoppingCar=shopCartRepository.findShopCartBySkuIdAndUserid(shoppingCarDTO.getSkuId(),shoppingCarDTO.getUserid());
         if (shoppingCar!=null){
             Map sku=feignProductClient.getSku(shoppingCarDTO.getSkuId());
-            if (sku.get("count").toString().equals("0")){
+            Long count=Long.valueOf(sku.get("count").toString());
+            if (count==0||count<shoppingCarDTO.getCount()){
                 message="failed";
-                content="添加购物车失败！暂无库存";
+                content="添加购物车失败！库存不足";
             }
             shoppingCar.setCount(shoppingCar.getCount()+shoppingCarDTO.getCount());
-            shoppingCar.setUserid(shoppingCarDTO.getUserid());
             shoppingCar.setDeleted(false);
             shoppingCar.setUpdatedTime(Instant.now());
             shopCartRepository.save(shoppingCar);
@@ -204,5 +204,10 @@ public class ShopCartServiceImpl implements ShopCartService {
             return "success";
         }
         return "failed";
+    }
+
+    @Override
+    public ShopCartDTO getShopCartBySkuId(Long skuId) {
+        return shopCartMapper.toDto(shopCartRepository.findBySkuId(skuId));
     }
 }

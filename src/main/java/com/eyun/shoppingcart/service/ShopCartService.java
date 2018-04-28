@@ -3,6 +3,8 @@ package com.eyun.shoppingcart.service;
 import com.eyun.shoppingcart.service.dto.ShopCartDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -49,4 +51,6 @@ public interface ShopCartService {
 
     /*清空购物车*/
     public String updateShoppingCar(Long userId, List<Long> skuids);
+
+    public ShopCartDTO getShopCartBySkuId(Long skuId);
 }

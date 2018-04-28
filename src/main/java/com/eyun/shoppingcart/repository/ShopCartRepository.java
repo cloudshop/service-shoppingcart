@@ -26,4 +26,6 @@ public interface ShopCartRepository extends JpaRepository<ShopCart, Long>, JpaSp
     @Query(value = "update shop_cart set count=0,deleted=true where userid=:userId AND sku_id IN(:skuids)",nativeQuery = true)
     public void updateShoppingCar(@Param("userId") Long userId, @Param("skuids") List skuids);
 
+    public ShopCart findBySkuId(Long skuId);
+
 }

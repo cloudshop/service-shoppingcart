@@ -114,7 +114,12 @@ public class ShopCartResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/shop-carts");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    @GetMapping("/shoppingcar/{skuId}")
+    @Timed
+    public ResponseEntity<ShopCartDTO> getShopCartBySkuId(@PathVariable Long skuId) {
+        ShopCartDTO shopCartDTO = shopCartService.getShopCartBySkuId(skuId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(shopCartDTO));
+    }
     /**
      * GET  /shop-carts/:id : get the "id" shopCart.
      *
