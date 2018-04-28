@@ -207,7 +207,7 @@ public class ShopCartServiceImpl implements ShopCartService {
     }
 
     @Override
-    public ShopCartDTO getShopCartBySkuId(Long skuId) {
+    public List<ShopCartDTO> getShopCartBySkuId(Long skuId) {
         return shopCartMapper.toDto(shopCartRepository.findBySkuId(skuId));
     }
 }

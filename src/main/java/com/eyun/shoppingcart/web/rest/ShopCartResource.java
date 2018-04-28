@@ -116,8 +116,8 @@ public class ShopCartResource {
     }
     @GetMapping("/shoppingcar/{skuId}")
     @Timed
-    public ResponseEntity<ShopCartDTO> getShopCartBySkuId(@PathVariable Long skuId) {
-        ShopCartDTO shopCartDTO = shopCartService.getShopCartBySkuId(skuId);
+    public ResponseEntity getShopCartBySkuId(@PathVariable Long skuId) {
+        List<ShopCartDTO> shopCartDTO = shopCartService.getShopCartBySkuId(skuId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(shopCartDTO));
     }
     /**
