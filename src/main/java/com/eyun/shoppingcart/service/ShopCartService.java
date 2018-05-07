@@ -52,5 +52,5 @@ public interface ShopCartService {
     /*清空购物车*/
     public String updateShoppingCar(Long userId, List<Long> skuids);
 
-    public List<ShopCartDTO> getShopCartBySkuId(Long skuId);
+    public List<ShopCartDTO> getShopCartBySkuId(Long skuId,Boolean deleted);
 }
