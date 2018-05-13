@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity ShopCart.
+    -->
+    <changeSet id="20180409122235-1" author="jhipster">
+        <createTable tableName="shop_cart">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="userid" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="shop_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sku_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="count" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="created_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="updated_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="deleted" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="shop_cart" columnName="created_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="shop_cart" columnName="updated_time" columnDataType="datetime"/>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

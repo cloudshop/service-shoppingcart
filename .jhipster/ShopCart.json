@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "userid",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "shopId",
+            "fieldType": "Long",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "skuId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "count",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "createdTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "updatedTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180409122235",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "shop_cart",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination",
+    "microserviceName": "shoppingcart",
+    "searchEngine": false
+}
